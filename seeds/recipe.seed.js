@@ -20,7 +20,7 @@ RecipeModel.create([
     instructions:
       "To make the pastry, measure the flour into a bowl and rub in the butter with your fingertips until the mixture resembles fine breadcrumbs. Add the water, mixing to form a soft dough. Roll out the dough on a lightly floured work surface and use to line a 20cm/8in flan tin. Leave in the fridge to chill for 30 minutes. Preheat the oven to 200C/400F/Gas 6 (180C fan). Line the pastry case with foil and fill with baking beans. Bake blind for about 15 minutes, then remove the beans and foil and cook for a further five minutes to dry out the base. For the filing, spread the base of the flan generously with raspberry jam. Melt the butter in a pan, take off the heat and then stir in the sugar. Add ground almonds, egg and almond extract. Pour into the flan tin and sprinkle over the flaked almonds. Bake for about 35 minutes. If the almonds seem to be browning too quickly, cover the tart loosely with foil to prevent them burning.",
     youtube: "https://www.youtube.com/watch?v=1ahpSTf_Pvk",
-   picture: "https://www.themealdb.com/images/media/meals/wyrqqq1468233628.jpg",
+    picture: "https://www.themealdb.com/images/media/meals/wyrqqq1468233628.jpg",
     description:
       "A Bakewell tart is an English confection consisting of a shortcrust pastry shell beneath layers of jam, frangipane, and a topping of flaked almonds.",
     cookingTime: 150,
@@ -440,7 +440,7 @@ RecipeModel.create([
       "This is one recipe a lot of people have requested and I have tried to make it as simple as possible and I hope it will work for you. Make sure you use the right flour which is basically one with raising agents. Adjust the amount of sugar to your taste and try using different flavours to have variety whenever you have them. You can use Coconut milk instead of regular milk, you can also add desiccated coconut to the dry flour or other spices like powdered cloves or cinnamon. For “healthy looking” mandazis do not roll the dough too thin before frying and use the procedure I have indicated above. 1. Mix the flour,cinnamon and sugar in a suitable bowl. 2. In a separate bowl whisk the egg into the milk 3. Make a well at the centre of the flour and add the milk and egg mixture and slowly mix to form a dough. 4. Knead the dough for 3-4 minutes or until it stops sticking to the sides of the bowl and you have a smooth surface. 5. Cover the dough with a damp cloth and allow to rest for 15 minutes. 6. Roll the dough on a lightly floured surface into a 1cm thick piece. 7. Using a sharp small knife, cut the dough into the desired size setting aside ready for deep frying. 8. Heat your oil in a suitable pot and gently dip the mandazi pieces to cook until light brown on the first side then turn to cook on the second side. 9. Serve them warm or cold",
     youtube:
       "https://www.youtube.com/watch?v=oWk0-7_hxZE&ab_channel=ChefRaphael",
-      picture: "https://www.themealdb.com/images/media/meals/thazgm1555350962.jpg",
+    picture: "https://www.themealdb.com/images/media/meals/thazgm1555350962.jpg",
     description:
       "Maandazis are Kenyan food which are made of all purpose flour. they are perfect for breakfast with a cup of tea. they can also go well as an accompaniment to many meal especially grilled meat. Enjoy!!",
     cookingTime: 60,
@@ -563,11 +563,12 @@ RecipeModel.create([
     vegetarian: true,
   },
 ])
-.then(()=>{
-  console.log('seed done')
-mongoose.connection.close()
-})
-.catch(()=>{
-  console.log('seed failed')
-  mongoose.connection.close()
-})
+  .then(() => {
+    console.log('seed done')
+    mongoose.connection.close()
+  })
+  .catch((err) => {
+
+    console.log(err)
+    mongoose.connection.close()
+  })
