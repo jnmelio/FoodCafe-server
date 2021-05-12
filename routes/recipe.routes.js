@@ -15,4 +15,7 @@ router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
   }
   //You will get the image url in 'req.file.path'
   //store that in the DB  
+  res.status(200).json({
+    picture: req.file.path
+  })
 })

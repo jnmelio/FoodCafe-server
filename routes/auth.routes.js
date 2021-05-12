@@ -147,4 +147,18 @@ router.get("/user", isLoggedIn, (req, res, next) => {
   res.status(200).json(req.session.loggedInUser);
 });
 
+
+// cloudinary
+router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
+  console.log('file is: ', req.file)
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+    return;
+  }
+  //You will get the image url in 'req.file.path'
+  //store that in the DB  
+  res.status(200).json({
+    picture: req.file.path
+  })
+})
 module.exports = router;
