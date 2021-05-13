@@ -5,6 +5,20 @@ const uploader = require('../config/cloudinary.config.js');
 
 // require  models
 const UserModel = require('../models/User.model');
+const RecipeModel = require("../models/Recipe.model");
+
+const isLoggedIn = (req, res, next) => {
+  if (req.session.loggedInUser) {
+    next()
+  }
+  else {
+    res.status(401).json({
+      message: 'Unauthorized user',
+      code: 401,
+    })
+  };
+};
+
 
 // Sign up post route      http://localhost:5005/api/signup
 
@@ -43,9 +57,11 @@ router.post('/signup', (req, res) => {
     .then((user) => {
       // ensuring that we don't share the hash as well with the user
       user.passwordHash = "***";
+      req.session.loggedInUser = user;
       res.status(200).json(user);
     })
     .catch((err) => {
+      console.log(err)
       if (err.code === 11000) {
         res.status(500).json({
           errorMessage: 'Username or email already exists!',
@@ -86,16 +102,16 @@ router.post('/login', (req, res) => {
 
   // Find if the user exists in the database 
   UserModel.findOne({ email })
-    .then((userData) => {
+    .then((user) => {
       //check if passwords match
-      bcrypt.compare(password, userData.password)
+      bcrypt.compare(password, user.password)
         .then((doesItMatch) => {
           //if it matches
           if (doesItMatch) {
             // req.session is the special object that is available to you
-            userData.password = "***";
-            req.session.loggedInUser = userData;
-            res.status(200).json(userData)
+            console.log('user loged in')
+            user.password = "***";
+            res.status(200).json(user)
           }
           //if passwords do not match
           else {
@@ -132,18 +148,26 @@ router.post('/logout', (req, res) => {
   res.status(204).json({});
 })
 
-// middleware to check if user is loggedIn
-const isLoggedIn = (req, res, next) => {
-  if (req.session.loggedInUser) {
-    next()
-  }
-  else {
-    res.status(401).json({
-      message: 'Unauthorized user',
-      code: 401,
+//RANDOM RECIPE SIGN UP
+router.get ('/signup', isLoggedIn, (req,res,next)=>{
+  RecipeModel.find()
+  .then((response)=>{
+    let randomRecipe = response[Math.floor(Math.random() * response.length)]
+    res.status(200).json(randomRecipe);
+  })
+  .catch((err)=>{
+    console.log(err)
+    res.status(500).json({
+      error: 'Email does not exist',
+      message: err
     })
-  };
-};
+  })
+})
+
+
+
+// middleware to check if user is loggedIn
+
 // Protected route
 // will handle all get requests to http://localhost:5005/api/user
 router.get("/user", isLoggedIn, (req, res, next) => {
