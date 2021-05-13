@@ -7,10 +7,10 @@ const recipeSchema = new Schema(
     instructions: { type: String, required: true },
     youtube: String,
     picture: String,
-    description: { type: String, required: true },
+    description: { type: [String], required: true },
     cookingTime: { type: Number, required: true },
     difficulty: String,
-    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    created_by: { type: Schema.Types.ObjectId, ref: 'User' },
     country: String,
     category: String,
     vegetarian: Boolean
