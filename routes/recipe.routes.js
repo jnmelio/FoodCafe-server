@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const uploader = require("../middlewares/cloudinary.config.js");
+const uploader = require("../config/cloudinary.config.js");
 // require models
 const RecipeModel = require("../models/Recipe.model");
 const PostModel = require("../models/Post.model");

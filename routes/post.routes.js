@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const uploader = require('../middlewares/cloudinary.config.js');
+const uploader = require('../config/cloudinary.config.js');
 
 // require models
 const RecipeModel = require('../models/Recipe.model');
@@ -20,3 +20,5 @@ router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
     picture: req.file.path
   })
 })
+
+module.exports = router;

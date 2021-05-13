@@ -27,7 +27,7 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24 //cookie will expire in one day (in milliseconds)
   },
   store: new MongoStore({
-    mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/ReactFoodCafe",
+    mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/FoodCafe",
     ttl: 60 * 60 * 24, // is in seconds. expiring in 1 day
   })
 }))
@@ -45,6 +45,7 @@ app.use('/api', recipeRoutes);
 
 const postRoutes = require('./routes/post.routes');
 app.use('/api', postRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
 
