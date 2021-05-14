@@ -39,7 +39,7 @@ router.post('/signup', (req, res) => {
   // password encryption with bcrypt
   let salt = bcrypt.genSaltSync(10);
   let hash = bcrypt.hashSync(password, salt);
-  UserModel.create({ username, firstName, lastName, email, passwordHash: hash, usertype, picture, recipe })
+  UserModel.create({ username, firstName, lastName, email, password: hash, usertype, picture, recipe })
     .then((user) => {
       // ensuring that we don't share the hash as well with the user
       user.passwordHash = "***";

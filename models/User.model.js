@@ -20,7 +20,8 @@ const userSchema = new Schema({
   recipe: {
     type: Schema.Types.ObjectId,
     ref: 'Recipe'
-  }
+  },
+  myFriends: [String]
 });
 
 const User = model("User", userSchema);
