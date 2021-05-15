@@ -32,11 +32,12 @@ router.post("/recipe/add", (req, res) => {
     description,
     cookingTime,
     difficulty,
-    created_by,
     country,
     category,
     vegetarian,
+    created_by
   } = req.body;
+
   RecipeModel.create({
     name,
     ingredients,
@@ -55,7 +56,9 @@ router.post("/recipe/add", (req, res) => {
       res.status(200).json(response);
     })
     .catch((err) => {
+      console.log(err)
       res.status(500).json({
+
         error: "Something went wrong",
         message: err,
       });
@@ -76,19 +79,7 @@ router.get("/recipe/:id", (req, res) => {
     });
 });
 
-//RANDOM RECIPE
-router.get("/recipe/random/:id", (req, res) => {
-  RecipeModel.findById(req.params.id)
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Something went wrong",
-        message: err,
-      });
-    });
-})
+
 
 //EDIT A RECIPE
 router.patch("/recipe/:id", (req, res) => {
@@ -107,6 +98,7 @@ router.patch("/recipe/:id", (req, res) => {
     category,
     vegetarian,
   } = req.body;
+  console.log(picture[0].path)
   RecipeModel.findOneAndUpdate(
     id,
     {
