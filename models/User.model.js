@@ -17,10 +17,11 @@ const userSchema = new Schema({
     ]
   },
   picture: String,
-  recipe: {
+  recipe: [{
     type: Schema.Types.ObjectId,
     ref: 'Recipe'
-  }
+  }], 
+  myFriends: []
 });
 
 const User = model("User", userSchema);

@@ -7,6 +7,8 @@ const uploader = require('../config/cloudinary.config.js');
 const UserModel = require('../models/User.model');
 const RecipeModel = require("../models/Recipe.model");
 
+
+// middleware to check if user is loggedIn
 const isLoggedIn = (req, res, next) => {
   if (req.session.loggedInUser) {
     next()
@@ -111,6 +113,7 @@ router.post('/login', (req, res) => {
             // req.session is the special object that is available to you
             console.log('user loged in')
             user.password = "***";
+            req.session.loggedInUser = user;
             res.status(200).json(user)
           }
           //if passwords do not match
@@ -150,15 +153,65 @@ router.post('/logout', (req, res) => {
 
 //RANDOM RECIPE SIGN UP
 router.get ('/signup', isLoggedIn, (req,res,next)=>{
-  RecipeModel.find()
-  .then((response)=>{
-    let randomRecipe = response[Math.floor(Math.random() * response.length)]
-    res.status(200).json(randomRecipe);
+  Promise.all([RecipeModel.find(), UserModel.find()])
+  .then(([recipeResponse, userResponse])=>{
+    let randomRecipe = recipeResponse[Math.floor(Math.random() * recipeResponse.length)]
+    let randomUser = userResponse[Math.floor(Math.random() * userResponse.length)]
+    res.status(200).json({randomRecipe, randomUser});
   })
   .catch((err)=>{
     console.log(err)
     res.status(500).json({
-      error: 'Email does not exist',
+      message: err
+    })
+  })
+})
+
+//ADD A FRIEND
+router.post('/addFriend/:randomUser', (req, res, next)=>{
+  const {randomUser} = req.params
+  const {_id} = req.session.loggedInUser
+  UserModel.findByIdAndUpdate(_id, {$push: {myFriends:randomUser}}, {new: true})
+  .then((response)=>{
+    console.log(response)
+    res.status(200).json(response)
+  })
+  .catch(()=>{
+    console.log(err)
+    res.status(500).json({
+      message: err
+    })
+  })
+})
+//ADD A RANDOM RECIPE
+router.post('/addRecipe/:randomRecipe', (req, res, next)=>{
+  const {randomRecipe} = req.params
+  const {_id} = req.session.loggedInUser
+  UserModel.findByIdAndUpdate(_id, {$push: {recipe:randomRecipe}}, {new: true})
+  .then((response)=>{
+    console.log(response)
+    res.status(200).json(response)
+  })
+  .catch(()=>{
+    console.log(err)
+    res.status(500).json({
+      message: err
+    })
+  })
+})
+
+//TIMELINE ROUTE
+router.get ('/timeline', isLoggedIn, (req,res,next)=>{
+  const {_id} = req.session.loggedInUser
+  UserModel.findById(_id)
+  .populate('recipe')
+  .then((response)=>{
+    console.log(response)
+    res.status(200).json(response);
+  })
+  .catch((err)=>{
+    console.log(err)
+    res.status(500).json({
       message: err
     })
   })
@@ -166,7 +219,6 @@ router.get ('/signup', isLoggedIn, (req,res,next)=>{
 
 
 
-// middleware to check if user is loggedIn
 
 // Protected route
 // will handle all get requests to http://localhost:5005/api/user
