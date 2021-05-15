@@ -5,6 +5,8 @@ const RecipeModel = require("../models/Recipe.model");
 const PostModel = require("../models/Post.model");
 const ChatModel = require("../models/Chat.model");
 
+
+
 //GET THE RECIPES
 router.get("/recipe", (req, res) => {
   RecipeModel.find()
@@ -30,11 +32,12 @@ router.post("/recipe/add", (req, res) => {
     description,
     cookingTime,
     difficulty,
-    created_by,
     country,
     category,
     vegetarian,
+    created_by
   } = req.body;
+
   RecipeModel.create({
     name,
     ingredients,
@@ -53,7 +56,9 @@ router.post("/recipe/add", (req, res) => {
       res.status(200).json(response);
     })
     .catch((err) => {
+      console.log(err)
       res.status(500).json({
+
         error: "Something went wrong",
         message: err,
       });
@@ -74,17 +79,7 @@ router.get("/recipe/:id", (req, res) => {
     });
 });
 
-//RANDOM RECIPE
-// router.get('/recipe/random', async (req, res) => {
-//   try {
-//     const Recipes = await RecipeModel.find()
-//     const selected = Math.floor(Math.random() * Recipes.length) + 1
-//     res.status(200).json(Recipes[selected])
-//   } catch (err) {
-//     console.log(err)
-//     res.status(404).json({ error: 'recipe not found' })
-//   }
-// })
+
 
 //EDIT A RECIPE
 router.patch("/recipe/:id", (req, res) => {
@@ -103,6 +98,7 @@ router.patch("/recipe/:id", (req, res) => {
     category,
     vegetarian,
   } = req.body;
+  console.log(picture[0].path)
   RecipeModel.findOneAndUpdate(
     id,
     {
