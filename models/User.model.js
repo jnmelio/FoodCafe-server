@@ -1,27 +1,29 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the user model to whatever makes sense in this case
+// THIS IS THE MODEL USER
 const userSchema = new Schema({
-
-  username: { type: String, required: true, unique: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
+  username: { type: String, unique: true },
+  firstName: { type: String },
+  lastName: { type: String },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String },
   usertype: {
     type: String,
-    enum: [
-      "freeUser",
-      "premiumUser",
-      "admin"
-    ]
+    enum: ["freeUser", "premiumUser", "admin"],
   },
   picture: String,
-  recipe: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Recipe'
-  }],
-  myFriends: [String]
+  recipe: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Recipe",
+    },
+  ],
+  myFriends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 const User = model("User", userSchema);
