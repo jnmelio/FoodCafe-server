@@ -4,7 +4,6 @@ const uploader = require('../config/cloudinary.config.js');
 // require models
 const RecipeModel = require('../models/Recipe.model');
 const PostModel = require('../models/Post.model');
-const ChatModel = require('../models/Chat.model');
 
 // upload picture route http://localhost:5005/api/upload      
 // imageUrl is the input name in your hbs file

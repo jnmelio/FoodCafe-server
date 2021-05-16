@@ -3,7 +3,8 @@ const uploader = require("../config/cloudinary.config.js");
 // require models
 const RecipeModel = require("../models/Recipe.model");
 const PostModel = require("../models/Post.model");
-const ChatModel = require("../models/Chat.model");
+const ChatModel = require("../models/Message.model");
+const UserModel = require('../models/User.model')
 
 
 
@@ -65,7 +66,7 @@ router.post("/recipe/add", (req, res) => {
     });
 });
 
-//RECIPE DETAILS
+//RECIPE DETAILS GET
 router.get("/recipe/:id", (req, res) => {
   RecipeModel.findById(req.params.id)
     .then((response) => {
@@ -79,6 +80,24 @@ router.get("/recipe/:id", (req, res) => {
     });
 });
 
+//RECIPE DETAILS ADD TO MY RECIPES
+router.post("/recipe/:addRecipe", (req, res) => {
+  const {addRecipe} = req.params
+  console.log('req.parmas', req.params)
+  const {_id} = req.session.loggedInUser
+  UserModel.findByIdAndUpdate(_id, {$push: {recipe:addRecipe}}, {new: true})
+    .then((response) => {
+      console.log('add recipe', response)
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
 
 
 //EDIT A RECIPE
@@ -147,8 +166,8 @@ router.delete("/recipe/:id", (req, res) => {
     });
 });
 
-// upload picture route http://localhost:5005/api/upload
-// imageUrl is the input name in your hbs file
+
+//CLOUDINARY
 router.post("/upload", uploader.single("imageUrl"), (req, res, next) => {
   console.log("file is: ", req.file);
   if (!req.file) {

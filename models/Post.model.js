@@ -5,17 +5,17 @@ const postSchema = new Schema(
   {
     username: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: "User",
     },
     picture: String,
     description: String,
-    reciep: {
+    recipe: {
       type: Schema.Types.ObjectId,
-      ref: 'Recipe'
-    }
+      ref: "Recipe",
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
