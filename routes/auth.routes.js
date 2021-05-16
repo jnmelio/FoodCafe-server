@@ -240,6 +240,22 @@ router.get("/timeline", isLoggedIn, (req, res, next) => {
     });
 });
 
+//ALL USERS ROUTE
+router.get("/users", (req, res) => {
+  UserModel.find()
+   .populate("recipe")
+    .populate("myFriends")
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: "Something went wrong",
+        message: err,
+      });
+    });
+});
+
 //FACEBOOK AUTH
 // The client makes a API request to this url sending the data in the body
 // router.post("/facebook/info", (req, res, next) => {

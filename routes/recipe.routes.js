@@ -68,7 +68,9 @@ router.post("/recipe/add", (req, res) => {
 
 //RECIPE DETAILS GET
 router.get("/recipe/:id", (req, res) => {
+  
   RecipeModel.findById(req.params.id)
+  .populate('created_by')
     .then((response) => {
       res.status(200).json(response);
     })
@@ -81,11 +83,10 @@ router.get("/recipe/:id", (req, res) => {
 });
 
 //RECIPE DETAILS ADD TO MY RECIPES
-router.post("/recipe/:addRecipe", (req, res) => {
-  const {addRecipe} = req.params
-  console.log('req.parmas', req.params)
+router.post("/recipe/:recipeId", (req, res) => {
+  const {recipeId} = req.params
   const {_id} = req.session.loggedInUser
-  UserModel.findByIdAndUpdate(_id, {$push: {recipe:addRecipe}}, {new: true})
+  UserModel.findByIdAndUpdate(_id, {$push: {recipe:recipeId}}, {new: true})
     .then((response) => {
       console.log('add recipe', response)
       res.status(200).json(response);
@@ -103,7 +104,9 @@ router.post("/recipe/:addRecipe", (req, res) => {
 //EDIT A RECIPE
 router.patch("/recipe/:id", (req, res) => {
   let id = req.params.id;
+  
   const {
+    name,
     ingredients,
     instructions,
     youtube,
@@ -117,11 +120,10 @@ router.patch("/recipe/:id", (req, res) => {
     vegetarian,
   } = req.body;
 
-  console.log(id)
-  RecipeModel.findOneAndUpdate(id,
+  RecipeModel.findByIdAndUpdate(id,
     {
       $set: {
-
+        name:name,
         ingredients,
         instructions,
         youtube,
