@@ -85,7 +85,6 @@ router.get("/recipe/:id", (req, res) => {
 router.patch("/recipe/:id", (req, res) => {
   let id = req.params.id;
   const {
-    name,
     ingredients,
     instructions,
     youtube,
@@ -98,12 +97,12 @@ router.patch("/recipe/:id", (req, res) => {
     category,
     vegetarian,
   } = req.body;
-  console.log(picture[0].path)
-  RecipeModel.findOneAndUpdate(
-    id,
+
+  console.log(id)
+  RecipeModel.findOneAndUpdate(id,
     {
       $set: {
-        name,
+
         ingredients,
         instructions,
         youtube,
@@ -120,10 +119,13 @@ router.patch("/recipe/:id", (req, res) => {
     { new: true }
   )
     .then((response) => {
+      console.log(response)
       res.status(200).json(response);
     })
     .catch((err) => {
+      console.log(err)
       res.status(500).json({
+
         error: "Something went wrong",
         message: err,
       });
@@ -132,11 +134,12 @@ router.patch("/recipe/:id", (req, res) => {
 
 //DELETE RECIPES
 router.delete("/recipe/:id", (req, res) => {
-  RecipeModel.findOneAndDelete(req.params.id)
+  RecipeModel.findByIdAndDelete(req.params.id)
     .then((response) => {
       res.status(200).json(response);
     })
     .catch((err) => {
+      console.log(err)
       res.status(500).json({
         error: "Something went wrong",
         message: err,
