@@ -36,7 +36,20 @@ app.use(
 
 // 👇 Start handling routes here
 // Contrary to the views version, all routes are controled from the routes/index.js
+const allRoutes = require('./routes');
+app.use('/api', allRoutes);
 
+const authRoutes = require('./routes/auth.routes');
+app.use('/api', authRoutes);
+
+const recipeRoutes = require('./routes/recipe.routes');
+app.use('/api', recipeRoutes);
+
+const postRoutes = require('./routes/post.routes');
+app.use('/api', postRoutes);
+
+const chatRoutes = require('./routes/chat.routes')
+app.use('/api', chatRoutes)
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

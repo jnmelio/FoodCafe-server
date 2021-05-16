@@ -81,11 +81,10 @@ router.get("/recipe/:id", (req, res) => {
 });
 
 //RECIPE DETAILS ADD TO MY RECIPES
-router.post("/recipe/:addRecipe", (req, res) => {
-  const {addRecipe} = req.params
-  console.log('req.parmas', req.params)
+router.post("/recipe/:recipeId", (req, res) => {
+  const {recipeId} = req.params
   const {_id} = req.session.loggedInUser
-  UserModel.findByIdAndUpdate(_id, {$push: {recipe:addRecipe}}, {new: true})
+  UserModel.findByIdAndUpdate(_id, {$push: {recipe:recipeId}}, {new: true})
     .then((response) => {
       console.log('add recipe', response)
       res.status(200).json(response);
