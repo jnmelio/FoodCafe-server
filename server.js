@@ -10,35 +10,35 @@ let myServer = app.listen(PORT, () => {
 
 
 //CHAT
-// const { Server } = require("socket.io");
-// const io = new Server(myServer, {
-// 	cors: {
-// 		origin: '*',
-// 	}
-// });
+const { Server } = require("socket.io");
+const io = new Server(myServer, {
+	cors: {
+		origin: '*',
+	}
+});
 
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 
-//   socket.on("join_chat", (data) => {
-//     socket.join(data);
-//     console.log("User Joined Room: " + data);
-//   });
+  socket.on("join_chat", (data) => {
+    socket.join(data);
+    console.log("User Joined Room: " + data);
+  });
 
-//   socket.on("send_message", (data) => {
-//     const { content: {sender, message}, chatId } = data
-//     let newMessage = {
-//       sender: sender._id, 
-//       message: message, 
-//       conversationId: chatId
-//     }
-//     // As the conversation happens, keep saving the messages in the DB
-//     MessageModel.create(newMessage)
-//       .then(() => {
-//         socket.to(data.chatId).emit("receive_message", data.content);
-//       })
-//   });
-// });
+  socket.on("send_message", (data) => {
+    const { content: {sender, message}, chatId } = data
+    let newMessage = {
+      sender: sender._id, 
+      message: message, 
+      conversationId: chatId
+    }
+    // As the conversation happens, keep saving the messages in the DB
+    MessageModel.create(newMessage)
+      .then(() => {
+        socket.to(data.chatId).emit("receive_message", data.content);
+      })
+  });
+});

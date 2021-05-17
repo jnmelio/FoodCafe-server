@@ -8,12 +8,12 @@ require("./Conversation.model");
 let MessageSchema = new Schema(
   {
     sender: {
-      ref: "user",
+      ref: "User",
       type: Schema.Types.ObjectId,
     },
     message: String,
     conversationId: {
-      ref: "conversation",
+      ref: "Conversation",
       type: Schema.Types.ObjectId,
     },
   },
