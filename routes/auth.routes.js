@@ -210,6 +210,7 @@ router.post("/addFriend/:randomUser", (req, res, next) => {
     { new: true }
   )
     .then((response) => {
+      req.session.loggedInUser = response
       console.log(response);
       res.status(200).json(response);
     })

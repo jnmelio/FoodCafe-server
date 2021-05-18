@@ -88,6 +88,7 @@ router.post("/recipe/:recipeId", (req, res) => {
   const {_id} = req.session.loggedInUser
   UserModel.findByIdAndUpdate(_id, {$push: {recipe:recipeId}}, {new: true})
     .then((response) => {
+      req.session.loggedInUser = response
       console.log('add recipe', response)
       res.status(200).json(response);
     })
