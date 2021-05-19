@@ -229,11 +229,11 @@ router.post("/addFriend/:randomUser", (req, res, next) => {
 //TIMELINE ROUTE
 router.get("/timeline", isLoggedIn, (req, res, next) => {
   const { _id } = req.session.loggedInUser;
+  console.log('im here')
   UserModel.findById(_id)
     .populate("recipe")
     .populate("myFriends")
     .then((response) => {
-      console.log(response);
       res.status(200).json(response);
     })
     .catch((err) => {
