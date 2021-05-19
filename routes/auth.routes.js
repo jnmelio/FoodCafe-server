@@ -116,6 +116,8 @@ router.post("/login", (req, res) => {
 
   // Find if the user exists in the database
   UserModel.findOne({ email })
+    .populate('myFriends')
+    .populate('recipe')
     .then((user) => {
       //check if passwords match
       bcrypt
