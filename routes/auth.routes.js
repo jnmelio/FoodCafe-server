@@ -19,6 +19,8 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
+
+
 // SIGN UP ROUTE
 router.post("/signup", (req, res) => {
   const {
@@ -190,6 +192,7 @@ router.post("/addRecipe/:randomRecipe", (req, res, next) => {
     { new: true }
   )
     .then((response) => {
+      req.session.loggedInUser = response
       res.status(200).json(response);
     })
     .catch(() => {
@@ -214,7 +217,7 @@ router.post("/addFriend/:randomUser", (req, res, next) => {
       console.log(response);
       res.status(200).json(response);
     })
-    .catch(() => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json({
         message: err,

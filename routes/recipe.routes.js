@@ -7,7 +7,6 @@ const ChatModel = require("../models/Message.model");
 const UserModel = require('../models/User.model')
 
 
-
 //GET THE RECIPES
 router.get("/recipe", (req, res) => {
   RecipeModel.find()
@@ -54,6 +53,7 @@ router.post("/recipe/add", (req, res) => {
     vegetarian,
   })
     .then((response) => {
+      req.session.loggedInUser = response
       res.status(200).json(response);
     })
     .catch((err) => {
@@ -68,7 +68,6 @@ router.post("/recipe/add", (req, res) => {
 
 //RECIPE DETAILS GET
 router.get("/recipe/:id", (req, res) => {
-  
   RecipeModel.findById(req.params.id)
   .populate('created_by')
     .then((response) => {
@@ -89,7 +88,6 @@ router.post("/recipe/:recipeId", (req, res) => {
   UserModel.findByIdAndUpdate(_id, {$push: {recipe:recipeId}}, {new: true})
     .then((response) => {
       req.session.loggedInUser = response
-      console.log('add recipe', response)
       res.status(200).json(response);
     })
     .catch((err) => {
