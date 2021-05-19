@@ -68,9 +68,9 @@ router.post("/recipe/add", (req, res) => {
 
 //RECIPE DETAILS GET
 router.get("/recipe/:id", (req, res) => {
-  
+
   RecipeModel.findById(req.params.id)
-  .populate('created_by')
+    .populate('created_by')
     .then((response) => {
       res.status(200).json(response);
     })
@@ -84,12 +84,11 @@ router.get("/recipe/:id", (req, res) => {
 
 //RECIPE DETAILS ADD TO MY RECIPES
 router.post("/recipe/:recipeId", (req, res) => {
-  const {recipeId} = req.params
-  const {_id} = req.session.loggedInUser
-  UserModel.findByIdAndUpdate(_id, {$push: {recipe:recipeId}}, {new: true})
+  const { recipeId } = req.params
+  const { _id } = req.session.loggedInUser
+  UserModel.findByIdAndUpdate(_id, { $push: { recipe: recipeId } }, { new: true })
     .then((response) => {
       req.session.loggedInUser = response
-      console.log('add recipe', response)
       res.status(200).json(response);
     })
     .catch((err) => {
@@ -105,7 +104,7 @@ router.post("/recipe/:recipeId", (req, res) => {
 //EDIT A RECIPE
 router.patch("/recipe/:id", (req, res) => {
   let id = req.params.id;
-  
+
   const {
     name,
     ingredients,
@@ -124,7 +123,7 @@ router.patch("/recipe/:id", (req, res) => {
   RecipeModel.findByIdAndUpdate(id,
     {
       $set: {
-        name:name,
+        name: name,
         ingredients,
         instructions,
         youtube,
@@ -141,7 +140,6 @@ router.patch("/recipe/:id", (req, res) => {
     { new: true }
   )
     .then((response) => {
-      console.log(response)
       res.status(200).json(response);
     })
     .catch((err) => {
@@ -172,7 +170,6 @@ router.delete("/recipe/:id", (req, res) => {
 
 //CLOUDINARY
 router.post("/upload", uploader.single("imageUrl"), (req, res, next) => {
-  console.log("file is: ", req.file);
   if (!req.file) {
     next(new Error("No file uploaded!"));
     return;

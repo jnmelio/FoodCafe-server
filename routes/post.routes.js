@@ -25,10 +25,19 @@ router.post("/new-post", (req, res) => {
   const {
     user, picture, description, recipe
   } = req.body;
-  console.log(picture)
-  PostModel.create({
-    user, picture, description, recipe
-  })
+  let newPost = {}
+  if (recipe) {
+    newPost = {
+      user, picture, description, recipe
+    }
+  }
+  else {
+    newPost = {
+      user, picture, description
+    }
+  }
+
+  PostModel.create(newPost)
     .then((response) => {
       res.status(200).json(response);
     })

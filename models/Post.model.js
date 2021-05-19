@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
-
+require('./Recipe.model.js')
+require('./User.model.js')
 // TODO: Please make sure you edit the user model to whatever makes sense in this case
 const postSchema = new Schema(
   {
