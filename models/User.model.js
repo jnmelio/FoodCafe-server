@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-
+require('./Recipe.model.js')
 // THIS IS THE MODEL USER
 const userSchema = new Schema({
   username: { type: String, unique: true },
@@ -24,6 +24,9 @@ const userSchema = new Schema({
       ref: "User",
     },
   ],
+  linkedInId: String,
+	googleId: String,
+	facebookId: String,
 });
 
 const User = model("User", userSchema);

@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-
+require('./User.model.js')
 //THIS IS THE MODEL FOR A RECIPE
 const recipeSchema = new Schema(
   {
