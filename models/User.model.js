@@ -24,6 +24,9 @@ const userSchema = new Schema({
       ref: "User",
     },
   ],
+  linkedInId: String,
+	googleId: String,
+	facebookId: String,
 });
 
 const User = model("User", userSchema);
