@@ -213,7 +213,6 @@ router.post("/addFriend/:randomUser", (req, res, next) => {
   )
     .then((response) => {
       req.session.loggedInUser = response
-      console.log(response);
       res.status(200).json(response);
     })
     .catch(() => {
@@ -229,10 +228,14 @@ router.post("/addFriend/:randomUser", (req, res, next) => {
 router.get("/timeline", isLoggedIn, (req, res, next) => {
   const { _id } = req.session.loggedInUser;
   UserModel.findById(_id)
-    .populate("recipe")
     .populate("myFriends")
+    // populate inside the populated element
+    .populate({
+      path: 'myFriends',
+      populate: 'recipe'
+    })
+    .populate('recipe')
     .then((response) => {
-      console.log(response);
       res.status(200).json(response);
     })
     .catch((err) => {
@@ -246,7 +249,7 @@ router.get("/timeline", isLoggedIn, (req, res, next) => {
 //ALL USERS ROUTE
 router.get("/users", (req, res) => {
   UserModel.find()
-   .populate("recipe")
+    .populate("recipe")
     .populate("myFriends")
     .then((users) => {
       res.status(200).json(users);
