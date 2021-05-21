@@ -194,7 +194,7 @@ router.post("/addRecipe/:randomRecipe", (req, res, next) => {
     .then((response) => {
       res.status(200).json(response);
     })
-    .catch(() => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json({
         message: err,
